@@ -1,0 +1,106 @@
+<!doctype html>
+ 
+<html lang="en">
+<head>
+  <title>pixeljourney</title>
+  <meta charset="utf-8" />
+  <!--Here is the css file you are using for your project UI included from CDN (content delivery network)-->
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+  
+  <!--Here is the main jQuery file included from CDN.You can you any other source-->
+  <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  
+  <!--Here is jQuery UI added from CDN-->
+  <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+  
+  <!-- Custom styles for the interface goes here -->
+  <style>
+  #draggable.notColliding { 
+  width: 50px;
+    height: 50px;
+    float: left;
+    background-color: black;
+    clear: left;
+    display: block;
+    position: absolute;
+    cursor: none;
+}
+#draggable.colliding {
+  width: 50px;
+    height: 50px;
+    float: left;
+    background-color: white;
+    clear: left;
+    display: block;
+    position: absolute;
+    cursor: none;
+}
+#div2 {
+    clear: right;
+    display: block;
+    float: right;
+    background-color: black;
+}	
+body {
+    cursor: none;
+}
+  </style>
+  
+  <!-- Draggable script goes here -->
+  <script>
+    $(document).ready(function(){
+      var $moveable = $( "#draggable" );
+      $(document).mousemove(function(e){
+          $moveable.css({'top': e.pageY,'left': e.pageX});
+      });
+    });
+
+function collision($draggable, $div2) {
+        var x1 = $draggable.offset().left;
+        var y1 = $draggable.offset().top;
+        var h1 = $draggable.outerHeight(true);
+        var w1 = $draggable.outerWidth(true);
+        var b1 = y1 + h1;
+        var r1 = x1 + w1;
+        var x2 = $div2.offset().left;
+        var y2 = $div2.offset().top;
+        var h2 = $div2.outerHeight(true);
+        var w2 = $div2.outerWidth(true);
+        var b2 = y2 + h2;
+        var r2 = x2 + w2;
+
+        if (b1 < y2 || y1 > b2 || r1 < x2 || x1 > r2) {
+            document.getElementById("draggable").className = "notColliding";
+            return false;
+        } else {
+            document.getElementById("draggable").className = "colliding";
+            return true;
+        }
+    }
+
+    window.setInterval(function () {
+        collision($('#draggable'), $('#div2'));
+    }, 50);
+
+  $(function() {
+        $( "#draggable" ).draggable();
+        var div2DocWidth = $(document).width() / 2;
+        var div2DocHeight = $(document).height();
+
+        document.getElementById( "div2" ).style.width = div2DocWidth + "px";
+       document.getElementById( "div2" ).style.height = div2DocHeight + "px";
+      });
+  
+  //Select the element of the page you want to make draggable and add the function 
+  //.draggable() after that
+  </script>
+</head>
+<body style="cursor: none">
+ 
+ <!-- In that case this div with id of #draggable draggable here 
+ and any conmonent inside that draggable div will be also draggable with that -->
+<div id="draggable" class="notColliding"></div>
+<div id="div2"></div>
+ 
+</body>
+</html>
